@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>DearDoctor</title>
+        <link rel="icon" type="image/png" href="images/Favicon.png">
+        <link rel="stylesheet" href="style.css">
+    </head>
+<style>
+    body {
+            background-color: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height:auto;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Logo styling (optional, adjust as needed) */
+        .logo-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+        }
+
+        .logo-container img {
+            width: 150px;
+        }
+
+        /* The main sign-in box */
+        .signin-box {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            margin-bottom:auto;
+        }
+
+        .signin-box h2 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #333333;
+        }
+
+        /* Input group styling */
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            color: #555555;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #cccccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .input-group input:focus {
+            border-color: #ff477e; /* matching your pink theme */
+            outline: none;
+        }
+        .otp-box {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        
+</style>
+<body>
+    <div class="logo-container">
+        <img src="images/DearDoctor%20logo.png" alt="DearDoctor Logo">  
+    </div>
+    <div class="signin-box">
+        <h1>Consultant Sign in</h1>
+        <div class="input-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password" required>
+        </div>
+    </div>
+    <div class="otp-box">
+        <p>Enter OTP sent to your phone</p>
+        <div class="input-group">
+            <label for="otp">OTP</label>
+            <input type="text" id="otp" placeholder="Enter OTP" required>
+        </div>
+        <button class="signin-btn">Verify OTP</button>
+        <p>Didn't receive the OTP? <a href="resend_otp.html">Resend</a></p>
+        <p><button type="submit" class="signin-btn">Sign in</button></p>
+    </div>
+
+
+</body>
+</html>

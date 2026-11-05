@@ -1,0 +1,274 @@
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+body{
+  font-family:"Segoe UI", Arial, Helvetica, sans-serif;
+  background-color:white;
+}
+header{
+  background-color:white;
+  padding-bottom:10px;
+  padding-top:10px;
+  display: flex;
+  max-width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom:5px;
+}
+.logo img{
+  display:block;
+  max-width:400px;
+  max-height:200px;
+  width:auto;
+  height:auto;
+  object-fit:contain;
+}
+.navigation-panel{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;            
+    background-color: #f2aac6;      
+    padding: 15px 15px; 
+}
+.container{
+    display: flex;                  
+    gap: 20px; 
+    margin:0;
+    padding:20px;
+}
+.container a{
+    color:white;
+    text-decoration:none;
+    font-size:16px;
+    padding:8px 12px;
+    transition:all 0.3 ease;
+}
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+nav{
+    align-items:center;
+    margin-bottom:30px;
+    justify-content:center;
+}
+.nav-btn{
+    background-color:#f2aac6;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    margin:0 5px;
+    cursor:pointer;
+    border-radius:5px;
+    transition:all 0.3s ease;
+    font-weight:bold;
+}
+.nav-btn:hover{
+    background-color:#e63b7c;
+}
+.intro-flex::before{
+    content: "";
+    position:absolute;
+    inset: 0;
+    background-image: url("https://cdn.prod.website-files.com/6501eb9f2f40d2adf0ba1b02/66f6eaaa9d4dfde570c69566_iStock-1055466820-min.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    opacity:0.6;
+    z-index:-1;
+}
+.intro-flex{
+    position: relative;
+    isolation: isolate;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.how-it-works{
+    background-color:white;
+    padding: 20px;
+    margin-bottom: 70px;
+    margin-top: 70px;
+}
+.how-it-works h2{
+    text-align:center;
+    margin-bottom:20px;
+}
+.how-it-works-flex{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-between;
+    padding:0px;
+    background-color:white;
+    margin-bottom:20px;
+}
+.how-it-works-card{
+    flex: 1 1 250px;
+    box-sizing: border-box;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width:400px;
+    height:200px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+.how-it-works-card img{
+    display:block;
+    max-width:100%;
+    max-height:100%;
+    object-fit:contain;
+}
+.how-it-works-card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.step-card{
+      animation: fade-in-up linear both;
+  
+  /* Triggers the animation based on its visibility in the viewport */
+  animation-timeline: view();
+  
+  /* Fine-tune exactly when the animation starts and ends */
+  animation-range: entry 10% contain 40%;
+}
+.step-grid .step-card:nth-child(1){
+    background-color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+
+}
+.step-grid .step-card:nth-child(2){
+    background-color: #f2aac6;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.step-grid .step-card:nth-child(3){
+    background-color: #f2622380;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+}
+.step-grid .step-card:nth-child(4){
+    background-color: #FFFD74;
+    padding: 20px;
+    margin-bottom: 50px;
+    border-radius: 5px;
+}
+.help button{
+    display:block;
+    margin:0 auto;
+}
+.help{
+    background-color:#fdf9fb;
+    padding:50px;
+    border-radius:0px;
+}
+.checkin-process{
+    background-color:#fdf9fb;
+    padding:50px;
+    border-radius:70px;
+}
+.privacy{
+    background-color:white;
+    padding:50px;
+    border-radius:0px;
+}
+
+
+/* The big pink container background */
+.faq-section {
+  background-color:  #f2aac6; /* Adjust to match your exact pink shade */
+  padding: 40px 30px;
+  border-radius: 10px 30px 60px 120px;
+  margin: 40px auto;
+  width: 70%;
+  box-sizing: border-box;
+  box-shadow:0 8px 20px #e63b7c;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.faq-section h2 {
+  margin-top: 0;
+  margin-bottom: 24px;
+}
+.faq-section:hover{
+    transform: translateY(-5px);
+    box-shadow:0 8px 20px #e63b7c;
+}
+
+
+.faq-item {
+  background: #ffffff;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.faq-item summary {
+  padding: 18px 24px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  list-style: none; /* Hides default triangle arrow */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Hide default browser marker for summary across browsers */
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Plus/Cross icon styling */
+.faq-item .icon {
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: transform 0.3s ease;
+}
+
+.faq-item[open] .icon {
+  transform: rotate(45deg);
+}
+
+.faq-item p {
+  padding: 0 24px 18px 24px;
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+.signin-btn,
+button.create-account-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #f2aac6; /* matching your brand pink */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signin-btn:hover,
+button.create-account-btn:hover {
+    background-color: #e63b7c;
+}

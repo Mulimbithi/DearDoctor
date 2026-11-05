@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang ="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DearDoctor</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+        /* General page styling to center everything */
+        body {
+            background-color: #f4f6f8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height:auto;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        /* Logo styling (optional, adjust as needed) */
+        .logo-container {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            text-align: left;
+            display: flex;
+        }
+
+        .logo-container img {
+            width: 150px;
+        }
+
+        /* The main sign-in box */
+        .signin-box {
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            box-sizing: border-box;
+            margin-bottom:auto;
+        }
+
+        .signin-box h2 {
+            margin-top: 0;
+            margin-bottom: 24px;
+            text-align: center;
+            color: #333333;
+        }
+</style>
+<body>
+    <div class="logo-container">
+        <div class="logo"><img src="images/DearDoctor%20logo.png" alt="DearDoctor"></div>
+    </div>
+    <div class="signin-box">
+        <h1>Staff Sign in</h1>
+        <p>Are you a consultant or Admin?</p>
+        <a href="consultant_signin.html"><button class="signin-btn">Consultant </button></a>
+        <a href="admin_signin.html"><button class="signin-btn">Admin </button></a>
+    </div>
+</body>
+</html>
