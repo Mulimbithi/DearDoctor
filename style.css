@@ -169,10 +169,8 @@ nav{
     margin-bottom: 50px;
     border-radius: 5px;
 }
-.help button{
-    display:block;
-    margin:0 auto;
-}
+
+
 .help{
     background-color:#fdf9fb;
     padding:50px;
@@ -272,3 +270,7 @@ button.create-account-btn {
 button.create-account-btn:hover {
     background-color: #e63b7c;
 }
+
+
+
+/* ---------- Tokens ---------- */
