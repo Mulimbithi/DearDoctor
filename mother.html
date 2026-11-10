@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocBot Dashboard</title>
+    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --bg-header: #dcdcdc;
@@ -38,14 +39,6 @@
             max-width: 480px;
             display: flex;
             flex-direction: column;
-        }
-
-        /* Header */
-        .header {
-            background-color: var(--bg-header);
-            padding: 24px 20px;
-            font-size: 1.15rem;
-            font-weight: 700;
         }
 
         /* Content Body */
@@ -134,11 +127,11 @@
         }
 
         .topic-btn {
-            background-color: var(--btn-dark);
-            color: #ffffff;
+            background-color: #e63b7c;
+            color:white;
             border: none;
             padding: 14px 16px;
-            border-radius: var(--radius-pill);
+            border-radius:40px ;
             font-size: 0.9rem;
             font-weight: 500;
             cursor: pointer;
@@ -151,10 +144,12 @@
     </style>
 </head>
 <body>
-
+    <div class="logo-container">
+        <img src="images/DearDoctor%20logo.png" alt="DearDoctor Logo">  
+    </div>
     <div class="app-container">
         <!-- Top Header Bar -->
-        header class="header">
+        <header class="header">
             DocBot
         </header>
 
@@ -173,8 +168,8 @@
                 <div class="checkin-title">You have an unfinished check-in</div>
                 <div class="checkin-subtitle">Question [n] of 10</div>
                 <div class="card-actions">
-                    <button class="btn btn-primary">Continue</button>
-                    <button class="btn btn-secondary">Start Again</button>
+                    <button class="signin-btn">Continue</button>
+                    <button class="signin-btn">Start Again</button>
                 </div>
             </div>
 
@@ -188,6 +183,10 @@
                 <button class="topic-btn">School</button>
                 <button class="topic-btn">Family</button>
             </div>
+            <div class="input-group">
+                <input type="text" placeholder="Enter your own topic...">
+            </div>
+
         </main>
     </div>
 

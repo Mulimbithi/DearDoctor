@@ -86,6 +86,32 @@
             margin-top: 20px;
             margin-bottom: 20px;
         }
+        .resend-row { font-size: 14px; color: #555555; }
+
+        .link-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            font: inherit;
+            color: #ff477e;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        .link-btn:disabled {
+            color: #999999;
+            text-decoration: none;
+            cursor: not-allowed;
+        }
+
+        .link-btn:focus-visible {
+            outline: 2px solid #ff477e;
+            outline-offset: 2px;
+        }
+
+        .otp-status { min-height: 20px; font-size: 14px; margin: 8px 0 0; }
+        .otp-status.success { color: #1a7f37; }
+        .otp-status.error { color: #c62828; }
         
 </style>
 <body>
@@ -110,7 +136,12 @@
             <input type="text" id="otp" placeholder="Enter OTP" required>
         </div>
         <button class="signin-btn">Verify OTP</button>
-        <p>Didn't receive the OTP? <a href="resend_otp.html">Resend</a></p>
+         <p class="resend-row">
+    Didn't receive the OTP?
+    <button type="button" id="resendBtn" class="link-btn">Resend</button>
+    <span id="resendTimer"></span>
+    </p>
+    <p id="otpStatus" class="otp-status" role="status" aria-live="polite"></p>
         <p><button type="submit" class="signin-btn">Sign in</button></p>
     </div>
 
