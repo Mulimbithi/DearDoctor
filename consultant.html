@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consultant Panel</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <script src="main.js"> </script>
     <style>
       .container {
         flex-direction: column;
@@ -49,6 +51,11 @@
       .notice-section{
         display:grid;
         border-radius:16px;
+        transition:opacity 0.4s ease, transform 0.4s ease;
+      }
+      .notice-section.fade-out{
+        opacity:0;
+        transform:translateY(-20px);
       }
       .notice{
         background:#f4f6f8;
@@ -57,52 +64,50 @@
         padding: 20px;
         border-radius:16px;
       }
+
      /* General button styling */
-    .chip {
-      padding: 9px 20px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 600;
-      cursor: pointer;
-      border: 1px solid transparent;
-      transition: 0.2s ease;
-    }
+      .chip {
+        padding: 9px 20px;
+        border-radius: 999px;
+        font-size: 15px;
+        font-weight: 600;
+        cursor: pointer;
+        border: 1px solid transparent;
+        transition: 0.2s ease;
+      }
     
 
-/* All - Pink */
-    .chip[data-filter="all"] {
-      background-color: #fff0f5;
-      color: #a83265;
-      border-color: #f5c6d8;
-    }
+      .chip[data-filter="all"] {
+        background-color: #fff0f5;
+        color: #a83265;
+        border-color: #f5c6d8;
+      }
 
-/* High - Red */
-    .high-chip {
-      background-color: #fee2e2;
-      color: #b91c1c;
-      border-color: #fca5a5;
-    }
 
-/* Medium - Orange */
-    .medium-chip {
-      background-color: #ffedd5;
-      color: #c2410c;
-      border-color: #fdba74;
-    }
+      .high-chip {
+        background-color: #fee2e2;
+        color: #b91c1c;
+        border-color: #fca5a5;
+      }
 
-/* Low - Green */
-    .low-chip {
-      background-color: #dcfce7;
-      color: #15803d;
-      border-color: #86efac;
-    }
+      .medium-chip {
+        background-color: #ffedd5;
+        color: #c2410c;
+        border-color: #fdba74;
+      }
 
-/* Selected button */
-    .chip.active {
-      font-weight: 700;
-      outline: 2px solid currentColor;
-      outline-offset: 2px;
-    }
+
+      .low-chip {
+        background-color: #dcfce7;
+        color: #15803d;
+        border-color: #86efac;
+      }
+
+      .chip.active {
+        font-weight: 700;
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
     </style>
   </head>
 
@@ -129,10 +134,10 @@
     </div>
   </section>
   <section class="notice-section">
-   <div class="notice" role="status">
-      <span aria-placeholder="Notification bar"> A case was closed because an account was deleted.</span>
-      <button class="nav-btn" type="button">Dismiss</button>
-    </div> 
+      <div class="notice" id="notification">
+        <span aria-placeholder="Notification bar"> A case was closed because an account was deleted.</span>
+        <button class="close-btn" id="closeNotification" >Dismiss</button>
+      </div> 
   </section> 
   <section class="risk grid">
    <nav class="filters" aria-label="Filter by risk level">

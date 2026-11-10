@@ -1,9 +1,10 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocBot Dashboard</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="stylesheet" href="style.css">
     <style>
         :root {
@@ -141,22 +142,86 @@
         .topic-btn:hover, .btn:hover {
             opacity: 0.9;
         }
+        .header-actions {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .header-actions button:disabled {
+            opacity: 0.6;
+            cursor: wait;
+        }
+        .deletion-dialog {
+            width: min(440px, calc(100% - 32px));
+            margin: auto;
+            padding: 24px;
+            border: 0;
+            border-radius: var(--radius-card);
+            color: var(--text-dark);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        }
+        .deletion-dialog::backdrop {
+            background: rgba(0, 0, 0, 0.45);
+        }
+        .deletion-dialog h2 {
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+        }
+        .deletion-dialog p {
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+        .deletion-dialog label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+        .deletion-dialog input {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 11px 12px;
+            border: 1px solid #999999;
+            border-radius: 8px;
+            font: inherit;
+        }
+        .deletion-status {
+            min-height: 1.4em;
+            color: #8a1230;
+        }
+        .deletion-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+        .deletion-actions button {
+            padding: 10px 14px;
+        }
+        @media (max-width: 360px) {
+            .deletion-actions {
+                flex-direction: column-reverse;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="logo-container">
-        <img src="images/DearDoctor%20logo.png" alt="DearDoctor Logo">  
-    </div>
     <div class="app-container">
         <!-- Top Header Bar -->
-        <header class="header">
-            DocBot
+        <header>
+            <strong>DocBot</strong>
+            <div class="header-actions">
+                <button type="button" class="nav-btn" id="open-deletion-dialog">Delete account</button>
+                <button type="button" class="nav-btn" id="logout-button">Sign out</button>
+            </div>
         </header>
 
         <!-- Main Viewport -->
         <main class="content">
-            <!-- Welcome Heading -->
-            <h1 class="greeting">Welcome back, [nickname]</h1>
+            <div class="welcome-container">
+                <h2 id="welcomeMessage">Welcome back, [nickname]</h2>
+            </div>
+            
 
             <!-- Conversation Prompt Bubble -->
             <div class="chat-bubble">
@@ -190,5 +255,20 @@
         </main>
     </div>
 
+    <dialog class="deletion-dialog" id="deletion-dialog" aria-labelledby="deletion-title">
+        <form id="deletion-form">
+            <h2 id="deletion-title">Request account deletion?</h2>
+            <p>Your account deletion will be scheduled after a 7-day waiting period. You can cancel the request during that period. Enter your password to confirm this request.</p>
+            <label for="deletion-password">Password</label>
+            <input id="deletion-password" name="password" type="password" autocomplete="current-password" required>
+            <p class="deletion-status" id="deletion-status" role="status" aria-live="polite"></p>
+            <div class="deletion-actions">
+                <button class="btn btn-secondary" type="button" id="cancel-deletion">Cancel</button>
+                <button class="btn btn-primary" type="submit" id="submit-deletion">Request deletion</button>
+                <button class="btn btn-secondary" type="button" id="cancel-deletion-request" hidden>Cancel deletion request</button>
+            </div>
+        </form>
+    </dialog>
+    <script src="main.js" defer></script>
 </body>
 </html>

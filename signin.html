@@ -86,7 +86,8 @@
 
     <div class="signin-box">
         <h2>Sign in</h2>
-        <form>
+        <form id="signin-form" novalidate>
+            <p id="form-error" class="form-error" role="alert" hidden></p>
             <div class="input-group">
                 <label for="username">Username*</label>
                 <input type="text" id="username" name="username" required>
@@ -99,6 +100,7 @@
 
             <button type="submit" class="signin-btn">Sign In</button>
         </form>
+        <script src="signin.js" defer></script>
     </div>
 
 </body>
