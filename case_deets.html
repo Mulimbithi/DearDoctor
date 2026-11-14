@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="main.js" defer></script>
+</head>
+<body data-page="case" style="visibility:hidden">
+  <main class="container consultant-page">
+    <header class="account-bar">
+      <a class="nav-btn" href="consultant.html">&lsaquo; Cases</a>
+      <h1 class="account-title" id="case-title">Case</h1>
+      <span class="badge" id="case-badge"></span>
+    </header>
+
+    <p id="page-error" class="form-error" role="alert" hidden></p>
+    <p id="action-message" class="sort-note" role="status" hidden></p>
+
+    <section class="case-count" style="text-align:left">
+      <p>Mother: <strong id="f-nickname"></strong></p>
+      <p>Age range: <strong id="f-age"></strong></p>
+      <p>EPDS score: <strong id="f-score"></strong></p>
+      <p>Self-harm flag: <strong id="f-selfharm"></strong></p>
+      <p>Agreed to calls: <strong id="f-calls"></strong></p>
+      <p>Status: <strong id="f-status"></strong></p>
+      <p>Assigned: <strong id="f-assigned"></strong></p>
+      <p class="sort-note">Her typed chat text is never shown.</p>
+    </section>
+
+    <section>
+      <h2>Follow-up notes</h2>
+      <ul id="notes-list" class="cases-grid" style="grid-template-columns:1fr"></ul>
+      <label for="note-text">Add a note</label>
+      <textarea id="note-text" rows="4"></textarea>
+      <button class="nav-btn" id="save-note" type="button">Save note</button>
+    </section>
+
+    <section>
+      <h2>Log a call</h2>
+      <p id="call-hint" class="sort-note" hidden>She has not agreed to calls, so a call cannot be logged for this case.</p>
+      <label for="call-outcome">Outcome</label>
+      <select id="call-outcome">
+        <option>Reached her</option><option>No answer</option>
+        <option>Call back later</option><option>Referred to a clinic</option>
+      </select>
+      <label for="call-notes">Notes</label>
+      <textarea id="call-notes" rows="3"></textarea>
+      <button class="nav-btn" id="log-call" type="button">Save call</button>
+    </section>
+
+    <section>
+      <h2>Close case</h2>
+      <label for="close-reason">Reason</label>
+      <select id="close-reason">
+        <option>Support provided</option><option>Referred to a clinic</option>
+        <option>Mother unreachable</option><option>Other</option>
+      </select>
+      <button class="nav-btn" id="close-case" type="button">Close case</button>
+    </section>
+  </main>
+</body>
+</html>

@@ -1,170 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Consultant Panel</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/png" href="images/Favicon.png">
-    <script src="main.js"> </script>
-    <style>
-      .container {
-        flex-direction: column;
-      }
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My cases</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/Favicon.png">
+  <script src="main.js" defer></script>
+</head>
+<body data-page="consultant" >
+  <main class="container consultant-page">
 
-      .account-bar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
-        width: 100%;
-      }
-
-      .account-title {
-        margin: 0;
-        text-align: left;
-      }
-      .case-section {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
-      }
-      .case-count{
-       background-color: #f4f6f8;
-       border:1px solid; 
-       border-radius: 16px;
-       padding:22px;
-       color:#f4f6f8;
-       text-align:center;
-       padding-bottom:5px;
-       padding-top:40px;
-       box-shadow: 0 2px 10px rgb(218, 212, 212);
-      }
-      .case-label{
-        color:black;
-        text-align:auto;
-      }
-      .case-value{
-        color:black;
-        text-align:center;
-      }
-      .notice-section{
-        display:grid;
-        border-radius:16px;
-        transition:opacity 0.4s ease, transform 0.4s ease;
-      }
-      .notice-section.fade-out{
-        opacity:0;
-        transform:translateY(-20px);
-      }
-      .notice{
-        background:#f4f6f8;
-        font-weight: 700;
-        font-size: 14px;
-        padding: 20px;
-        border-radius:16px;
-      }
-
-     /* General button styling */
-      .chip {
-        padding: 9px 20px;
-        border-radius: 999px;
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        border: 1px solid transparent;
-        transition: 0.2s ease;
-      }
-    
-
-      .chip[data-filter="all"] {
-        background-color: #fff0f5;
-        color: #a83265;
-        border-color: #f5c6d8;
-      }
-
-
-      .high-chip {
-        background-color: #fee2e2;
-        color: #b91c1c;
-        border-color: #fca5a5;
-      }
-
-      .medium-chip {
-        background-color: #ffedd5;
-        color: #c2410c;
-        border-color: #fdba74;
-      }
-
-
-      .low-chip {
-        background-color: #dcfce7;
-        color: #15803d;
-        border-color: #86efac;
-      }
-
-      .chip.active {
-        font-weight: 700;
-        outline: 2px solid currentColor;
-        outline-offset: 2px;
-      }
-    </style>
-  </head>
-
-<body>
-   <div class="container">
-    <div class="account-bar">
-      <h2 class="account-title">My Cases</h2>
-      <a class="nav-btn" href="signin.html">Sign Out</a>
-     </div>
-     <div class="button-container">
-      <a href="settings.html" class="button">Settings</a>
+    <header class="account-bar">
+      <h1 class="account-title">My cases</h1>
+      <div class="account-actions">
+        <a class="nav-btn" href="settings.html">Settings</a>
+        <button class="nav-btn" id="signout" type="button">Sign out</button>
       </div>
-  <section class="case-section">
-    <div class="case-count">
-      <span class="case-label">Open</span>
-      <strong class="case-value">[n]</strong>
-    </div>
-    <div class="case-count">
-      <span class="case-label">High risk</span>
-      <strong class="case-value">[n]</strong>
-    <div class="notice" role="status">
-      <span placeholder="Notice message"></span>
-    </div>
-    </div>
-  </section>
-  <section class="notice-section">
-      <div class="notice" id="notification">
-        <span aria-placeholder="Notification bar"> A case was closed because an account was deleted.</span>
-        <button class="close-btn" id="closeNotification" >Dismiss</button>
-      </div> 
-  </section> 
-  <section class="risk grid">
-   <nav class="filters" aria-label="Filter by risk level">
-    <button class="chip active" data-filter="all">All</button>
-    <button class="chip high-chip" data-filter="high">High</button>
-    <button class="chip medium-chip" data-filter="medium">Medium</button>
-    <button class="chip low-chip" data-filter="low">Low</button>
-   </nav>
-  </section>
-  <ul class="case-list">
-    <li>
-      <a class="card-case" href="#" text-decoraion="none">
-        <div class="case-info">
-          <div class="case-head">
-           <strong class="case-id">[C-101]</strong>
-           <span class="badge badge-high">High</span>
-          </div>
-          <p class="case-meta"><strong>[username],[age range]</strong></p>
-          <p class="case-status"><strong>Open</strong></p>
- 
-          
+    </header>
 
-        </div>
-      </a>
-    </li>
-  </ul>
-    </div>
-  </div>
+    <p id="page-error" class="form-error" role="alert" hidden></p>
+
+    <section class="case-section" aria-label="Case summary">
+      <div class="case-count">
+        <span class="case-label">Open</span>
+        <strong class="case-value" id="open-count">&ndash;</strong>
+      </div>
+      <div class="case-count">
+        <span class="case-label">High risk</span>
+        <strong class="case-value" id="high-count">&ndash;</strong>
+      </div>
+    </section>
+    <p id="capacity-note" class="sort-note" hidden></p>
+
+    <section id="notices" aria-live="polite"></section>
+
+    <nav class="filters" aria-label="Filter by risk level">
+      <button class="chip chip-all active" type="button" data-filter="all"    aria-pressed="true">All</button>
+      <button class="chip high-chip"       type="button" data-filter="high"   aria-pressed="false">High</button>
+      <button class="chip medium-chip"     type="button" data-filter="medium" aria-pressed="false">Medium</button>
+      <button class="chip low-chip"        type="button" data-filter="low"    aria-pressed="false">Low</button>
+    </nav>
+    <p class="sort-note">Sorted by risk level, then by how long the case has been waiting</p>
+
+    <ul class="cases-grid" id="case-list"></ul>
+    <p id="empty-message" class="sort-note" hidden></p>
+
+  </main>
 </body>
 </html>
