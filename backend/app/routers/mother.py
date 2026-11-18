@@ -25,6 +25,9 @@ class RegisterIn(BaseModel):
 def register(data: RegisterIn, db: Session = Depends(get_db)):
     if not data.consent:
         raise HTTPException(status_code=400, detail="Consent is required")
+    if db.query(User).filter(User.phone == data.phone).first():
+        raise HTTPException(status_code=409,
+                            detail="This number is already registered. Please sign in.")
     user = User(role="mother", pseudonym=data.pseudonym, age_range=data.age_range, phone=data.phone)
     db.add(user)
     db.flush()

@@ -20,8 +20,8 @@ def create_token(user_id: int, role:str) -> str:
 
 def decode_jwt(creds:HTTPAuthorizationCredentials = Depends(bearer)) -> dict:
     try:
-        return jwt.decode(creds.credentials, JWT_SECRET, algorithm=["HS256"])
-    except jwt.PyTWTError:
+        return jwt.decode(creds.credentials, JWT_SECRET, algorithms=["HS256"])
+    except jwt.PyJWTError as e:
         raise HTTPException(status_code=401, detail="Invalid or expired token")
 
 def require_role(*roles):

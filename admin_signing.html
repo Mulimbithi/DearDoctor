@@ -75,17 +75,7 @@
             border-color: #ff477e; /* matching your pink theme */
             outline: none;
         }
-        .otp-box {
-            background: #ffffff;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
+        
 </style>
 <body>
     <div class="logo-container">
@@ -100,18 +90,8 @@
         <div class="input-group">
             <label for="password">Password</label>
             <input type="password" id="password" placeholder="Password" required>
+            <a href="otp.html"><button type="submit" class="signin-btn">Sign in</button></a>
         </div>
     </div>
-    <div class="otp-box">
-        <p>Enter OTP sent to your phone</p>
-        <div class="input-group">
-            <label for="otp">OTP</label>
-            <input type="text" id="otp" placeholder="Enter OTP" required>
-        </div>
-        <button class="signin-btn">Verify OTP</button>
-        <p>Didn't receive the OTP? <a href="resend_otp.html">Resend</a></p>
-        <p><button type="submit" class="signin-btn">Sign in</button></p>
-    </div>
-
 </body>
 </html>
