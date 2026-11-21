@@ -123,6 +123,83 @@ SCRIPT = {
         "options": [],
         "next": {},
     },
+     "result_low": {
+        "text": {
+            "en": "Thank you for answering. Your answers don't suggest you need "
+                  "urgent support right now. If you would like to talk to a "
+                  "counsellor anyway, we can arrange that. Would you like one to "
+                  "contact you?",
+            "sw": "",
+        },
+        "options": [
+            {"id": "yes", "label": {"en": "Yes, please", "sw": ""}},
+            {"id": "no", "label": {"en": "Not now", "sw": ""}},
+        ],
+        "next": {"yes": "consultant_requested", "no": "consultant_not_now"},
+    },
+
+    "result_low_repeat": {
+        "text": {
+            "en": "Thank you for checking in again, {name}. Your answers don't "
+                  "suggest you need urgent support right now. Would you like a "
+                  "counsellor to contact you?",
+            "sw": "",
+        },
+        "options": [
+            {"id": "yes", "label": {"en": "Yes, please", "sw": ""}},
+            {"id": "no", "label": {"en": "Not now", "sw": ""}},
+        ],
+        "next": {"yes": "consultant_requested", "no": "consultant_not_now"},
+    },
+
+    "result_moderate": {
+        "text": {
+            "en": "Thank you for answering. It sounds like you may be going "
+                  "through a hard time, and talking to a counsellor can help. "
+                  "Would you like one to contact you?",
+            "sw": "",
+        },
+        "options": [
+            {"id": "yes", "label": {"en": "Yes, please", "sw": ""}},
+            {"id": "no", "label": {"en": "Not now", "sw": ""}},
+        ],
+        "next": {"yes": "consultant_requested", "no": "consultant_not_now"},
+    },
+
+    "result_moderate_repeat": {
+        "text": {
+            "en": "Thank you for checking in again, {name}. It sounds like "
+                  "things may still be hard. Would you like a counsellor to "
+                  "contact you?",
+            "sw": "",
+        },
+        "options": [
+            {"id": "yes", "label": {"en": "Yes, please", "sw": ""}},
+            {"id": "no", "label": {"en": "Not now", "sw": ""}},
+        ],
+        "next": {"yes": "consultant_requested", "no": "consultant_not_now"},
+    },
+
+    "consultant_requested": {
+        "text": {
+            "en": "Thank you. A counsellor from our team will contact you. You "
+                  "can also call " + HELPLINES["en"] + " any time.",
+            "sw": "",
+        },
+        "options": [],
+        "next": {},
+    },
+
+    "consultant_not_now": {
+        "text": {
+            "en": "That's okay. You can come back any time, and if you change "
+                  "your mind you can ask for a counsellor then. You can also "
+                  "call " + HELPLINES["en"] + " any time.",
+            "sw": "",
+        },
+        "options": [],
+        "next": {},
+    },
     
 }
 def get_text(node_id: str, lang: str = "en", name: str = "") -> str:
