@@ -78,17 +78,6 @@ SCRIPT = {
         ],
         "next": {"ok": "EPDS"},
     },
-    "result_none": {
-        "text": {
-            "en": "Ok that's it great job! Thank you for being honest with me. "
-                  "According to my calculations you are doing quite well but "
-                  "if things get worse, you can come back and talk again, "
-                  "or call " + HELPLINES["en"] + ".",
-
-        },
-        "options": [],
-        "next": {},
-    },
     "result_high": {
         "text": {
             "en": "Ok that's all of the questions! Thank you for being honest with me."
