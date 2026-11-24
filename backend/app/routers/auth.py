@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import User, OtpCode
 from app.phone import normalise_phone
-from app.security import create_token, generate_otp, hash_otp
+from app.security import create_token, generate_otp, hash_otp, verify_password, require_role
 
 router= APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -34,7 +34,7 @@ def find_user(db: Session, phone: str):
            .filter(User.phone  == phone,
                    User.status == "active")
             .first())
-@router.post("/request-otp")
+
 def request_otp(data: OtpRequestIn, db: Session = Depends(get_db)):
     now = datetime.now(timezone.utc)
     user = find_user(db, data.phone)
@@ -48,11 +48,38 @@ def request_otp(data: OtpRequestIn, db: Session = Depends(get_db)):
             raise HTTPException(status_code=429,
                                 detail="Too many requests. Try again later.")
         code = generate_otp()
+        print(f"OTP for {data.phone}: {code}", flush=True)
         db.add(OtpCode(user_id=user.id, code_hash=hash_otp(code),
                        expires_at=now + timedelta(minutes=5)))
         db.commit()
-        print(f"OTP for {data.phone}: {code}")   # Phase 4 replaces this with an SMS
+        print(f"OTP for {data.phone}: {code}", flush=True)  # Phase 4 replaces this with an SMS
     return {"message": "If the number is registered, a code has been sent."}
+class LoginIn(BaseModel):
+    phone: str
+    password: str
+
+    @field_validator("phone")
+    @classmethod
+    def check_phone(cls, v):
+        return normalise_phone(v)
+
+
+@router.post("/login")
+def login(data: LoginIn, db: Session = Depends(get_db)):
+    user = find_user(db, data.phone)
+    if not user or not verify_password(data.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Wrong phone number or password")
+    result = request_otp(OtpRequestIn(phone=data.phone), db)
+    return {**result, "pending_token": create_token(user.id, "pending")}
+
+@router.post("/resend-otp")
+def resend_otp(token=Depends(require_role("pending")),
+               db: Session = Depends(get_db)):
+    user = db.get(User, int(token["sub"]))
+    if not user or user.status != "active":
+        raise HTTPException(status_code=404, detail="User not found")
+    return request_otp(OtpRequestIn(phone=user.phone), db)
+
 @router.post("/verify-otp")
 def verify_otp(data: OtpVerifyIn, db: Session = Depends(get_db)):
     now = datetime.now(timezone.utc)

@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#ffffff">
     <title>DocBot Dashboard</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="stylesheet" href="style.css">
@@ -33,21 +34,37 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            min-height: 100dvh;
+            overflow-x: hidden;
         }
 
         .app-container {
             width: 100%;
-            max-width: 480px;
+            max-width: 920px;
+            height: 100vh;
+            height: 100dvh;
             display: flex;
             flex-direction: column;
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
 
         /* Content Body */
         .content {
-            padding: 24px 20px;
+            width: 100%;
+            padding: 24px 16px 8px;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            flex: 1;
+        }
+        header {
+            width: 100%;
+            min-height: 56px;
+            padding: 12px 16px;
+            gap: 12px;
+            border-bottom: 1px solid #d8d8d8;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
         }
 
         /* Greeting */
@@ -145,11 +162,28 @@
         .header-actions {
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: flex-start;
             flex-wrap: wrap;
             gap: 8px;
         }
-        .header-actions button:disabled {
+        .header-link {
+            color: var(--text-dark);
+            background-color: #ffd84d;
+            border: 0;
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+        .header-link:hover,
+        .header-link:focus-visible {
+            text-decoration: none;
+            background-color: #ffca28;
+        }
+        .header-actions button:disabled,
+        .header-actions .header-link:disabled {
             opacity: 0.6;
             cursor: wait;
         }
@@ -203,55 +237,94 @@
                 flex-direction: column-reverse;
             }
         }
+
+        .chat-log { display: flex; flex: 1; flex-direction: column; gap: 10px; min-height: 0; overflow-y: auto; padding-top: 24px;}
+        .chat-bubble.me { background: #e63b7c; color: #fff; align-self: flex-end; }
+        .chat-options { display: flex; flex-direction: column; gap: 10px; }
+        .chat-form { position: relative; }
+        .chat-form input { width: 100%; box-sizing: border-box; padding: 12px 76px 12px 14px; border: 1px solid #999; border-radius: 50px; font: inherit; }
+        .chat-form .chat-send {
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            width: auto;
+            min-height: 36px;
+            margin-top: 0;
+            padding: 8px 12px;
+            transform: translateY(-50%);
+            border-radius: 40px;
+        }
+        .chat-note { font-size: 0.85rem; color: var(--text-muted); }
+
+        @media (min-width: 640px) {
+            .app-container {
+                max-width: 920px;
+            }
+            .content {
+                padding: 24px 32px 8px;
+            }
+            header {
+                padding: 12px 32px;
+            }
+            .header-actions {
+                justify-content: flex-end;
+                gap: 12px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                align-items: flex-start;
+                flex-direction: column;
+                padding: 12px 16px;
+            }
+            .header-actions {
+                width: 100%;
+            }
+            .header-link {
+                flex: 1 1 auto;
+                text-align: center;
+                min-height: 44px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .content {
+                padding: 20px 12px 8px;
+            }
+            .header-actions {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+            .header-link {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="app-container">
-        <!-- Top Header Bar -->
         <header>
             <strong>DocBot</strong>
             <div class="header-actions">
-                <button type="button" class="nav-btn" id="open-deletion-dialog">Delete account</button>
-                <button type="button" class="nav-btn" id="logout-button">Sign out</button>
+                <a href="#" class="header-link" id="new-chat">New chat</a>
+                <a href="#" class="header-link" id="open-deletion-dialog">Delete account</a>
+                <a href="#" class="header-link" id="logout-button">Sign out</a>
             </div>
         </header>
 
-        <!-- Main Viewport -->
         <main class="content">
-            <div class="welcome-container">
-                <h2 id="welcomeMessage">Welcome back, [nickname]</h2>
-            </div>
-            
-
-            <!-- Conversation Prompt Bubble -->
-            <div class="chat-bubble">
-                Last time we talked about [topic]. How has that been?
-            </div>
-
-            <!-- Unfinished Check-in Card -->
-            <div class="checkin-card">
-                <div class="checkin-title">You have an unfinished check-in</div>
-                <div class="checkin-subtitle">Question [n] of 10</div>
-                <div class="card-actions">
-                    <button class="signin-btn">Continue</button>
-                    <button class="signin-btn">Start Again</button>
-                </div>
-            </div>
-
-            <!-- Topic Selection Heading -->
-            <div class="section-label">Or talk about something else</div>
-
-            <!-- Topic Pills -->
-            <div class="topic-grid">
-                <button class="topic-btn">Loneliness</button>
-                <button class="topic-btn">Baby and sleep</button>
-                <button class="topic-btn">School</button>
-                <button class="topic-btn">Family</button>
-            </div>
-            <div class="input-group">
-                <input type="text" placeholder="Enter your own topic...">
-            </div>
-
+            <div id="chat-log" class="chat-log" aria-live="polite"></div>
+            <div id="chat-options" class="chat-options"></div>
+            <p id="chat-error" role="alert" hidden style="color:#b00020;"></p>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-text" placeholder="Or type a message..." autocomplete="off">
+                <button type="submit" class="signin-btn chat-send">Send</button>
+            </form>
+            <p class="chat-note">If you are in danger or thinking of hurting yourself, call 116 (Child Helpline) or 1190 (LVCT Health).</p>
         </main>
     </div>
 
@@ -263,12 +336,14 @@
             <input id="deletion-password" name="password" type="password" autocomplete="current-password" required>
             <p class="deletion-status" id="deletion-status" role="status" aria-live="polite"></p>
             <div class="deletion-actions">
-                <button class="btn btn-secondary" type="button" id="cancel-deletion">Cancel</button>
+                <button class="btn btn-secondary" type="button" id="cancel-deletion">Close</button>
                 <button class="btn btn-primary" type="submit" id="submit-deletion">Request deletion</button>
                 <button class="btn btn-secondary" type="button" id="cancel-deletion-request" hidden>Cancel deletion request</button>
             </div>
         </form>
     </dialog>
-    <script src="main.js" defer></script>
+    <script src="api.js"></script>
+    <script src="chat.js"></script>
+    <script src="deletion.js"></script>
 </body>
 </html>

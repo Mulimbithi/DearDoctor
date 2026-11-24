@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Case</title>
   <link rel="stylesheet" href="style.css">
-  <script src="main.js" defer></script>
+  <script src="api.js"></script>
+  <script src="case.js" defer></script>
 </head>
 <body data-page="case" style="visibility:hidden">
   <main class="container consultant-page">
@@ -23,7 +24,7 @@
       <p>Age range: <strong id="f-age"></strong></p>
       <p>EPDS score: <strong id="f-score"></strong></p>
       <p>Self-harm flag: <strong id="f-selfharm"></strong></p>
-      <p>Agreed to calls: <strong id="f-calls"></strong></p>
+      <p>Opened because: <strong id="f-trigger"></strong></p>
       <p>Status: <strong id="f-status"></strong></p>
       <p>Assigned: <strong id="f-assigned"></strong></p>
       <p class="sort-note">Her typed chat text is never shown.</p>
@@ -35,19 +36,6 @@
       <label for="note-text">Add a note</label>
       <textarea id="note-text" rows="4"></textarea>
       <button class="nav-btn" id="save-note" type="button">Save note</button>
-    </section>
-
-    <section>
-      <h2>Log a call</h2>
-      <p id="call-hint" class="sort-note" hidden>She has not agreed to calls, so a call cannot be logged for this case.</p>
-      <label for="call-outcome">Outcome</label>
-      <select id="call-outcome">
-        <option>Reached her</option><option>No answer</option>
-        <option>Call back later</option><option>Referred to a clinic</option>
-      </select>
-      <label for="call-notes">Notes</label>
-      <textarea id="call-notes" rows="3"></textarea>
-      <button class="nav-btn" id="log-call" type="button">Save call</button>
     </section>
 
     <section>

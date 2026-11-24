@@ -1,4 +1,4 @@
-import hashlib
+import hashlib, hmac, os
 import secrets
 from datetime import datetime, timedelta, timezone
 
@@ -36,4 +36,19 @@ def generate_otp() -> str:
 
 def hash_otp(code: str) -> str:
     return hashlib.sha256((code + JWT_SECRET).encode()).hexdigest()
-    
+
+def hash_password(password: str) -> str:
+    salt = os.urandom(16)
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode(), salt, 200_000)
+    return salt.hex() + "$" + digest.hex()
+
+
+def verify_password(password: str, stored) -> bool:
+    if not stored:
+        return False
+    try:
+        salt_hex, digest_hex = stored.split("$")
+    except ValueError:
+        return False
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode(), bytes.fromhex(salt_hex), 200_000)
+    return hmac.compare_digest(digest.hex(), digest_hex)

@@ -39,7 +39,7 @@
         }
 
         .input-group input:focus {
-            border-color: #ff477e; /* matching your pink theme */
+            border-color: #ff477e;
             outline: none;
         }
         .otp-box {
@@ -56,13 +56,20 @@
 </style>
 <body>
     <div class="otp-box">
-        <p>Enter OTP sent to your phone</p>
-        <div class="input-group">
-            <label for="otp">OTP</label>
-            <input type="text" id="otp" placeholder="Enter OTP" required>
-        </div>
-        <button class="signin-btn">Verify OTP</button>
-        <p>Didn't receive the OTP? <a href="resend_otp.html">Resend</a></p>
-        <p><button type="submit" class="signin-btn">Sign in</button></p>
+        <form id="otp-form" novalidate>
+            <p>Enter the 6-digit code sent to your phone</p>
+            <p id="form-error" role="alert" hidden style="color:#b00020;font-size:14px;margin:8px 0;"></p>
+            <p id="form-info" role="status" hidden style="color:#2e7d32;font-size:14px;margin:8px 0;"></p>
+            <div class="input-group">
+                <label for="otp">Code</label>
+                <input type="text" id="otp" inputmode="numeric" maxlength="6" placeholder="123456" required>
+            </div>
+            <button type="submit" class="signin-btn">Verify and sign in</button>
+        </form>
+        <p>Didn't receive the code? <a href="#" id="resend">Resend</a></p>
+        <p style="font-size:13px;color:#555;">Wrong number? <a href="signin.html">Start again</a></p>
     </div>
+    <script src="api.js"></script>
+    <script src="otp.js"></script>
 </body>
+</html>

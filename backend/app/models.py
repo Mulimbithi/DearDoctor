@@ -17,7 +17,7 @@ class User(Base):
     age_range = Column(String(20))
     status = Column(String(20), default="active")    # active / paused
     created_at = Column(DateTime(timezone=True), default=now)
-
+    password_hash = Column(String(255))
 
 class Consent(Base):
     __tablename__ = "consents"
@@ -26,7 +26,7 @@ class Consent(Base):
     consent_given = Column(Boolean, default=False)
     sms_opt_in = Column(Boolean, default=False)
     created_at = Column(DateTime(timezone=True), default=now)
-
+    call_consent = Column(Boolean, default=False)
 
 class ChatSession(Base):
     __tablename__ = "sessions"
@@ -43,7 +43,6 @@ class Message(Base):
     sender = Column(String(10))                      # bot / mother
     text = Column(Text)
     created_at = Column(DateTime(timezone=True), default=now)
-
 
 class Screening(Base):
     __tablename__ = "screenings"
@@ -91,3 +90,12 @@ class OtpCode(Base):
     code_hash = Column(String(128))
     expires_at = Column(DateTime(timezone=True))
     used = Column(Boolean, default=False)
+
+class CallLog(Base):
+    __tablename__ = "call_logs"
+    id = Column(Integer, primary_key=True)
+    referral_id = Column(Integer, ForeignKey("referrals.id"))
+    consultant_id = Column(Integer, ForeignKey("users.id"))
+    outcome = Column(String(40))
+    notes = Column(Text)
+    created_at = Column(DateTime(timezone=True), default=now)

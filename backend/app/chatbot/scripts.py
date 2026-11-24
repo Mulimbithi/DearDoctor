@@ -5,7 +5,9 @@ HELPLINES = {
 SCRIPT = {
     "welcome_new": {
         "text": {
-            "en": "Hello, {name}. My name is docBot and I'm here to listen and check how you've been feeling!",
+            "en": "Hello, {name}. My name is docBot. I'm an automated assistant "
+                  "here to listen and check how you've been feeling. I am not a "
+                  "doctor.",
         },
         "options":[
             {"id": "start", "label": {"en": "Let's begin"}},
@@ -80,45 +82,65 @@ SCRIPT = {
     },
     "result_high": {
         "text": {
-            "en": "Ok that's all of the questions! Thank you for being honest with me."
-                   "It sounds like things have been a bit hard lately and it's great that "
-                   "you're able to acknowledge that! That is the first and most important step"
-                   "of this journey that you don't have to walk on your own. I will get you "
-                   "in contact with one of our very able consultants who will reach out to you "
-                   "soon. You can also call" + HELPLINES["en"] + " any time.",
-
+            "en": "That's all of the questions. Thank you for being honest with me. "
+                  "It sounds like things have been hard lately, and noticing that is "
+                  "the first and most important step. You don't have to go through "
+                  "this on your own. One of our counsellors will reach out to you "
+                  "soon. You can also call " + HELPLINES["en"] + " any time.",
         },
         "options": [],
         "next": {},
     },
-
+    "result_high_repeat": {
+        "text": {
+            "en": "Thank you for checking in again, {name}, and for being honest "
+                  "with me. It sounds like things are still hard right now. A "
+                  "counsellor from our team will reach out to you soon. You can "
+                  "also call " + HELPLINES["en"] + " any time.",
+        },
+        "options": [],
+        "next": {},
+    },
     "result_urgent": {
         "text": {
-            "en": "Thank your for telling me. What you shared is important, and I value you're honesty. According to you're results, you are in desperate need "
-                  "of a helping hand. No need to fear, it is perfectly fine to not be"
-                  "doing well as a first time mother but it is important that we take action"
-                  "as soon as possible. Visit your nearest hospital or as someone you trust"
-                  "to stay with you. A counsellor from our team has also been notified and "
-                  "will be in touch with you soon.",          
+            "en": "Thank you for telling me. What you shared is important, and "
+                  "I'm glad you told me. It is okay to not be doing well, and it is "
+                  "important that you get support as soon as possible. Please go to "
+                  "your nearest hospital or ask someone you trust to stay with you. "
+                  "A counsellor from our team has been told and will be in touch "
+                  "soon. If you are in danger right now, call " + HELPLINES["en"] + ".",
+        },
+        "options": [],
+        "next": {},
+    },
+    "result_urgent_repeat": {
+        "text": {
+            "en": "Thank you for checking in again, {name}. What you shared "
+                  "is important, and I'm glad you told me. It is okay to not "
+                  "be doing well, and it is important that you get support as "
+                  "soon as possible. Please go to your nearest hospital or ask "
+                  "someone you trust to stay with you. A counsellor from our "
+                  "team has been told and will be in touch soon. If you are in "
+                  "danger right now, call " + HELPLINES["en"] + ".",
         },
         "options": [],
         "next": {},
     },
     "crisis": {
         "text": {
-            "en": "I'm really sorry you feel this way. You matter, and "
-                  "help is available right now. Please call " + HELPLINES["en"] +
-                  ", or visit a nearby "
+            "en": "I'm really sorry you feel this way. You matter, and help is "
+                  "available right now. Please call " + HELPLINES["en"] +
+                  ", or go to the nearest hospital or health centre. If you can, "
+                  "ask someone you trust to stay with you.",
         },
         "options": [],
         "next": {},
     },
-
     "fallback": {
         "text": {
-            "en": "sorry, I didn't understand that. Please choose one of the "
-                   "options shown. If you need help right now, call "
-                   +HELPLINES["en"] + ".",
+            "en": "Sorry, I didn't understand that. Please choose one of the "
+                  "options shown. If you need help right now, call "
+                  + HELPLINES["en"] + ".",
         },
         "options": [],
         "next": {},
