@@ -6,7 +6,8 @@
     <title>Admin - Consultants</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="stylesheet" href="style.css">
-    <script src="main.js"> </script>
+    <script src="api.js"></script>
+    <script src="admin.js" defer></script>
     <style>
         :root {
             --bg-card: #f2f2f2;
@@ -168,41 +169,6 @@
             padding: 12px;
             text-align: center;
         }
-        .close-btn{
-            background-color:#f2aac6;
-            color:white;
-            border:none;
-            padding:10px 20px;
-            margin:0 5px;
-            cursor:pointer;
-            border-radius:5px;
-            transition:all 0.3s ease;
-            font-weight:bold;
-        }
-        .close-btn:hover{
-            background-color:#e63b7c;
-        }
-        .notice-section{
-         display:flex;
-         border-radius:16px;
-         justify-content:space-between;
-         align-items:center;
-         transition:opacity 0.4s ease, transform 0.4s ease;
-        }
-        .notice-section.fade-out{
-            opacity:0;
-            transform:translateY(-20px);
-        }
-        .notice{
-            background:#f4f6f8;
-            font-weight: 700;
-            font-size: 14px;
-            padding: 20px;
-            border-radius:16px;
-            margin-bottom: 20px;
-    
-        }
-        
     </style>
 </head>
 <body>
@@ -212,17 +178,13 @@
             <li><a href="#">Consultants</a></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Reports</a></li>
+            <li><a href="#" id="signout">Sign out</a></li>
         </ul>
     </nav>
 
     <main>
         <h1 class="page-title">Consultants</h1>
-         <section class="notice-section">
-                <div class="notice" id="notification">
-                    <span aria-placeholder="Notification bar"> A case was closed because an account was deleted.</span>
-                    <button class="close-btn" id="closeNotification" >Dismiss</button>
-                </div> 
-            </section> 
+        <p id="page-error" role="alert" hidden style="color:#b00020;margin-bottom:12px;"></p>
         <div class="view-consultants">
             
             <div class="table-container"> 
@@ -235,52 +197,37 @@
                             <th></th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>[Name]</td>
-                            <td>Active</td>
-                            <td>[n]</td>
-                            <td class="text-right">
-                                <button class="nav-btn">Pause</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>[Name]</td>
-                            <td>Paused</td>
-                            <td>[n]</td>
-                            <td class="text-right">
-                                <button class="nav-btn">Reactivate</button>
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody id="consultant-rows"></tbody>
                 </table>
             </div>
 
             <div class="card">
-                <h2 style="font-size: 1.05rem; margin-bottom: 18px;">Create user account</h2>
+                <h2 style="font-size: 1.05rem; margin-bottom: 18px;">Create consultant account</h2>
                 
                 <div class="form-group">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-input">
+                    <label class="form-label" for="c-name">Name</label>
+                    <input type="text" id="c-name" class="form-input" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Phone Number</label>
-                    <input type="tel" class="form-input">
+                    <label class="form-label" for="c-phone">Phone Number</label>
+                    <input type="tel" id="c-phone" class="form-input" placeholder="0712345678" required>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">Role</label>
-                    <select class="form-select">
-                        <option>Consultant</option>
-                    </select>
+                    <label class="form-label" for="c-email">Email</label>
+                    <input type="email" id="c-email" class="form-input" required>
                 </div>
 
-                <button class="nav-btn" style="margin-top: 10px;">Send invite</button>
+                <p id="form-error" role="alert" hidden style="color:#b00020;margin-bottom:10px;"></p>
+                <p id="form-message" role="status" hidden style="color:#2e7d32;margin-bottom:10px;"></p>
+                <button type="button" class="signin-btn" id="send-invite" style="margin-top: 10px;">Send invite</button>
+                <button type="button" class="nav-btn" id="retry-invite" hidden style="margin-top: 10px;">Retry invite</button>
             </div>
 
         </div>
     </main>
+
 </body>
 </html>
 

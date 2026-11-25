@@ -87,6 +87,7 @@
     <div class="signin-box">
         <h2>Sign in</h2>
         <form id="signin-form" novalidate>
+            <p id="form-info" role="status" hidden style="color:#2e7d32;font-size:14px;margin-bottom:12px;"></p>
             <p id="form-error" class="form-error" role="alert" hidden></p>
             <div class="input-group">
                 <label for="email">Email*</label>
@@ -95,15 +96,14 @@
 
             <div class="input-group">
                 <label for="password">Password*</label>
-                <input type="password" id="password" name="password"  autocomplete="current-password" required>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
             </div>
 
-            <button type="submit" class="signin-btn">Sign In</button>
+            <button type="submit" class="signin-btn">Sign in</button>
         </form>
-        <p style="margin-top:16px;font-size:14px;">After your password we will send you a code.</p>
-        <a href="register.html">Create an account</a>
-       <script src="api.js?v=2"></script>
-        <script src="signin.js?v=2" defer></script>
+        <p style="margin-top:16px;font-size:14px;">After your password we send a code to your email. <a href="register.html">Create an account</a></p>
+        <script src="api.js"></script>
+        <script src="signin.js"></script>
     </div>
 
 </body>

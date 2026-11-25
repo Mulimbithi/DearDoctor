@@ -5,10 +5,15 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import User, ChatSession, Message, Screening, RiskEvent, Consent
 from app.security import require_role
-from app.cases import open_case
 from app.chatbot.scripts import SCRIPT, get_text, get_options
 from app.chatbot.epds import EPDS_ITEMS, total_score
-from app.chatbot.risk import classify
+from app.chatbot.risk import (
+    classify,
+    open_case,
+    counsellor_line,
+    current_referral,
+    notify_assigned_consultant,
+)
 from app.chatbot.results import build_result
 from app.chatbot.crisis import detect_crisis
 
@@ -89,9 +94,10 @@ def choose(data: ChooseIn,
         raise HTTPException(status_code=400, detail="Unknown node or choice")
     target = node["next"][data.choice]
 
-    if data.node == "consnet":
+    if data.node == "consent":
         save_msg(db, session.id, "mother", f"consent:{data.choice}")
 
+    notification_referral = None
     #mother asked to speak to a counsellor after a low or moderate risk result
     if data.choice == "yes" and data.node.startswith(("result_low", "result_moderate")):
         screening = (db.query(Screening)
@@ -103,13 +109,22 @@ def choose(data: ChooseIn,
                    .filter(RiskEvent.screening_id == screening.id,
                            RiskEvent.trigger == "requested_by_mother").first())
         if not already:
-            open_case(db, user.id, screening.id, classify(screening.answers),
-                      "requested_by_mother")
+            referral, created = open_case(
+                db, user.id, screening.id, classify(screening.answers),
+                "requested_by_mother",
+            )
+            if created:
+                notification_referral = referral
     db.commit()
+    if notification_referral:
+        notify_assigned_consultant(db, notification_referral)
 
     if target == "EPDS":
         return epds_question(1)
-    return node_payload(target, data.lang, user.pseudonym or "friend")
+    payload = node_payload(target, data.lang, user.pseudonym or "friend")
+    if target == "consultant_requested":
+        payload["text"] += counsellor_line(db, current_referral(db, user.id))
+    return payload
 
 class EpdsAnswerIn(BaseModel):
     session_id: int
@@ -161,14 +176,20 @@ def epds_answer(data: EpdsAnswerIn,
     db.add(screening)
     db.flush()# sends the new row to the database without finishing the save so it can be used in open_case
 
+    notification_referral = None
     if level in("high", "urgent"):
         trigger = "item10_positive" if level == "urgent" else "epds_high"
-        open_case(db, user.id, screening.id, level, trigger)#opens a case and assigns a consultant
-    else:
-        db.commit()#if the risk isnt high then the screening is just saved
+        referral, created = open_case(db, user.id, screening.id, level, trigger)
+        if created:
+            notification_referral = referral
+    db.commit()#save screening and any case/referral created for a high-risk result
+    if notification_referral:
+        notify_assigned_consultant(db, notification_referral)
 
     node, text = build_result(level, previous_total, total, data.lang,
-                          user.pseudonym or "friend")
+                              user.pseudonym or "friend")
+    if level in ("high", "urgent"):
+        text = text + counsellor_line(db, current_referral(db, user.id))
     payload = node_payload(node, data.lang, user.pseudonym or "friend")
     payload["text"] = text
     return payload
@@ -192,7 +213,10 @@ def typed_message(data: MessageIn,
         if not declined:
             save_msg(db, session.id, "system", f"urgent:{category}")
             db.commit()
-            open_case(db, user.id, None, "urgent", category)
+            referral, created = open_case(db, user.id, None, "urgent", category)
+            db.commit()
+            if created:
+                notify_assigned_consultant(db, referral)
         return node_payload("crisis", data.lang, name)
 
     if not declined:

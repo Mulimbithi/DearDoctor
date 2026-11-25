@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from app.db import engine, Base
 from app import models
-from app.routers import mother, auth, chat, consultant
+from app.routers import mother, auth, chat, consultant, admin
 from app.security import require_role
 
 Base.metadata.create_all(engine)
@@ -18,6 +18,7 @@ app.include_router(mother.router)
 app.include_router(auth.router)
 app.include_router(chat.router)
 app.include_router(consultant.router)
+app.include_router(admin.router)
 
 @app.get("/api/health")
 def health():

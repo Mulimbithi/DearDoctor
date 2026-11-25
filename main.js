@@ -291,17 +291,6 @@ async function initCase() {
         }
     }
 
-    const dismissButton = document.getElementById("closeNotification");
-    const noticeSection = document.querySelector(".notice-section");
-    if (dismissButton && noticeSection) {
-        dismissButton.addEventListener("click", () => {
-            noticeSection.classList.add("fade-out");
-            noticeSection.addEventListener("transitionend", () => noticeSection.remove(), { once: true });
-        });
-    }
-    
-   
-    //fix code from here//
     const deletionDialog = document.getElementById("deletion-dialog");
     const deletionForm = document.getElementById("deletion-form");
     const deletionPassword = document.getElementById("deletion-password");

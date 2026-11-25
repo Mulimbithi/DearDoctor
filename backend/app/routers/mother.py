@@ -6,7 +6,7 @@ from sqlalchemy import func
 from app.db import get_db
 from app.models import User, Consent
 from app.phone import normalise_phone
-from app.security import create_token, hash_password
+from app.security import hash_password
 
 router = APIRouter(prefix="/api/mother", tags=["mother"])
 
@@ -65,4 +65,4 @@ def register(data: RegisterIn, db: Session = Depends(get_db)):
 
     db.commit()
 
-    return {"token": create_token(user.id, "mother"), "user_id": user.id}
+    return {"user_id": user.id, "message": "Account created. Please sign in."}

@@ -33,3 +33,12 @@ def send_otp_email(to: str, code: str) -> bool:
         f"Your sign-in code is {code}. It expires in 5 minutes.\n"
         "If you did not try to sign in, you can ignore this email.",
     )
+
+
+def send_new_case_email(to: str, consultant_name: str) -> bool:
+    return send_email(
+        to,
+        "A new DearDoctor case has been assigned to you",
+        f"Hello {consultant_name},\n\n"
+        "A new case has been assigned to you. Sign in to DearDoctor to review it.",
+    )
