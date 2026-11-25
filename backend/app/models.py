@@ -13,7 +13,8 @@ class User(Base):
     role = Column(String(20), nullable=False)        # mother / consultant / admin
     pseudonym = Column(String(60))
     full_name = Column(String(100))                  # staff only
-    phone = Column(String(20))                       # mother: only if she opts in
+    phone = Column(String(20))
+    email = Column(String(255))                       # mother: only if she opts in
     age_range = Column(String(20))
     status = Column(String(20), default="active")    # active / paused
     created_at = Column(DateTime(timezone=True), default=now)

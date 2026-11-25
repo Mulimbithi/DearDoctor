@@ -1,14 +1,14 @@
 // api.js - shared helpers. Load this BEFORE the page's own script.
 const API_BASE = "http://127.0.0.1:8000/api";
 const TOKEN_KEY = "deardoctor_access_token";
-const PHONE_KEY = "deardoctor_phone";
+window.PHONE_KEY = "deardoctor_phone";
 const PENDING_KEY = "deardoctor_pending";
 
 function getToken() { return sessionStorage.getItem(TOKEN_KEY); }
 function saveToken(token) { sessionStorage.setItem(TOKEN_KEY, token); }
 function clearSession() {
     sessionStorage.removeItem(TOKEN_KEY);
-    sessionStorage.removeItem(PHONE_KEY);
+    sessionStorage.removeItem(window.PHONE_KEY);
 }
 
 // Sends a request to the backend. Throws an Error (with .status) if it fails.

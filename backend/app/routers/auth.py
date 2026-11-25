@@ -3,12 +3,14 @@ from datetime import datetime, timedelta, timezone
 
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
+from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.models import User, OtpCode
 from app.phone import normalise_phone
 from app.security import create_token, generate_otp, hash_otp, verify_password, require_role
+from app.email_sender import send_otp_email
 
 router= APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -44,7 +46,7 @@ def request_otp(data: OtpRequestIn, db: Session = Depends(get_db)):
                     .filter(OtpCode.user_id == user.id,
                             OtpCode.expires_at > now - timedelta(minutes=10))
                     .count())
-        if recent >= 3:
+        if recent >= 8:
             raise HTTPException(status_code=429,
                                 detail="Too many requests. Try again later.")
         code = generate_otp()
@@ -53,24 +55,27 @@ def request_otp(data: OtpRequestIn, db: Session = Depends(get_db)):
                        expires_at=now + timedelta(minutes=5)))
         db.commit()
         print(f"OTP for {data.phone}: {code}", flush=True)  # Phase 4 replaces this with an SMS
+        if user.email:
+            send_otp_email(user.email, code)
+
     return {"message": "If the number is registered, a code has been sent."}
 class LoginIn(BaseModel):
-    phone: str
+    email: str
     password: str
-
-    @field_validator("phone")
-    @classmethod
-    def check_phone(cls, v):
-        return normalise_phone(v)
 
 
 @router.post("/login")
 def login(data: LoginIn, db: Session = Depends(get_db)):
-    user = find_user(db, data.phone)
+    email = data.email.strip().lower()
+    user = (db.query(User)
+            .filter(func.lower(User.email) == email, User.status == "active")
+            .first())
     if not user or not verify_password(data.password, user.password_hash):
-        raise HTTPException(status_code=401, detail="Wrong phone number or password")
-    result = request_otp(OtpRequestIn(phone=data.phone), db)
-    return {**result, "pending_token": create_token(user.id, "pending")}
+        raise HTTPException(status_code=401, detail="Wrong email or password")
+    result = request_otp(OtpRequestIn(phone=user.phone), db)
+    return {**result,
+            "pending_token": create_token(user.id, "pending"),
+            "phone": user.phone}
 
 @router.post("/resend-otp")
 def resend_otp(token=Depends(require_role("pending")),

@@ -29,6 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     pseudonym: form.elements["username"].value.trim(),
                     age_range: form.elements["age-range"].value,
                     phone: form.elements["phone"].value.trim(),
+                    email: form.elements["email"].value.trim(),
                     password: form.elements["password"].value,
                     consent: true,
                     sms_opt_in: form.elements["sms-notifications"].checked
@@ -38,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.assign("mother.html");
         } catch (error) {
             if (error.status === 422) {
-                showError("Please check your phone number (for example 0712345678) and make sure your password has at least 8 characters.");
+                showError("Please check your phone number, email address, and password (at least 8 characters).");
             } else {
                 showError(error.message);
             }

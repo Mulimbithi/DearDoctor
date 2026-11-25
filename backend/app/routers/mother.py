@@ -18,6 +18,15 @@ class RegisterIn(BaseModel):
     sms_opt_in: bool = False
     password: str
     call_consent: bool = False
+    email: str
+
+    @field_validator("email")
+    @classmethod
+    def check_email(cls, v):
+        v = v.strip().lower()
+        if " " in v or "@" not in v or "." not in v.split("@")[-1]:
+            raise ValueError("Enter a valid email address")
+        return v
 
     @field_validator("password")
     @classmethod
@@ -43,7 +52,12 @@ def register(data: RegisterIn, db: Session = Depends(get_db)):
           .first()):
         raise HTTPException(status_code=409,
                             detail="This username is taken. Please choose another.")
-    user = User(role="mother", pseudonym=data.pseudonym, age_range=data.age_range, phone=data.phone, password_hash=hash_password(data.password))
+    if db.query(User).filter(func.lower(User.email) == data.email).first():
+        raise HTTPException(status_code=409, detail="That email is already registered")
+
+    user = User(role="mother", pseudonym=data.pseudonym, age_range=data.age_range,
+                phone=data.phone, email=data.email,
+                password_hash=hash_password(data.password))
     db.add(user)
     db.flush()
 

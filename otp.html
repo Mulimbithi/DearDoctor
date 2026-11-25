@@ -57,7 +57,7 @@
 <body>
     <div class="otp-box">
         <form id="otp-form" novalidate>
-            <p>Enter the 6-digit code sent to your phone</p>
+            <p>Enter the 6-digit code sent to your email</p>
             <p id="form-error" role="alert" hidden style="color:#b00020;font-size:14px;margin:8px 0;"></p>
             <p id="form-info" role="status" hidden style="color:#2e7d32;font-size:14px;margin:8px 0;"></p>
             <div class="input-group">
@@ -67,9 +67,9 @@
             <button type="submit" class="signin-btn">Verify and sign in</button>
         </form>
         <p>Didn't receive the code? <a href="#" id="resend">Resend</a></p>
-        <p style="font-size:13px;color:#555;">Wrong number? <a href="signin.html">Start again</a></p>
+        <p style="font-size:13px;color:#555;">Wrong email? <a href="signin.html">Start again</a></p>
     </div>
-    <script src="api.js"></script>
-    <script src="otp.js"></script>
+    <script src="api.js?v=2"></script>
+    <script src="otp.js?v=2"></script>
 </body>
 </html>

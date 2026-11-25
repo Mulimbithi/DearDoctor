@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const infoBox = document.getElementById("form-info");
     const resend = document.getElementById("resend");
     const button = form.querySelector('button[type="submit"]');
-    const phone = sessionStorage.getItem(PHONE_KEY);
+    const phone = sessionStorage.getItem(window.PHONE_KEY);
 
     if (!phone) { window.location.assign("signin.html"); return; }
 
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: { phone, code: codeInput.value.trim() }
             });
             saveToken(data.token);
-            sessionStorage.removeItem(PHONE_KEY);
+            sessionStorage.removeItem(window.PHONE_KEY);
             sessionStorage.removeItem(PENDING_KEY);
             window.location.assign(HOME[data.role] || "signin.html");
         } catch (error) {
