@@ -3,13 +3,12 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import CallLog, CaseNote, Consent, Referral, RiskEvent, Screening, User
+from app.models import CaseNote, Consent, Referral, RiskEvent, Screening, User
 from app.security import require_role
 
 router = APIRouter(prefix="/api/consultant", tags=["consultant"])
 
 MAX_CASES = 4
-CALL_OUTCOMES = ("Reached her", "No answer", "Call back later", "Referred to a clinic")
 
 
 def fmt(dt):
@@ -53,11 +52,6 @@ class NoteIn(BaseModel):
     body: str
 
 
-class CallIn(BaseModel):
-    outcome: str
-    notes: str = ""
-
-
 @router.get("/cases")
 def list_cases(token=Depends(require_role("consultant")),
                db: Session = Depends(get_db)):
@@ -93,13 +87,6 @@ def case_detail(ref: str, token=Depends(require_role("consultant")),
                       "created_at": n.created_at.strftime("%Y-%m-%d %H:%M"),
                       "body": n.note} for n in notes]
 
-    calls = (db.query(CallLog)
-               .filter(CallLog.referral_id == referral.id)
-               .order_by(CallLog.created_at)
-               .all())
-    data["calls"] = [{"created_at": c.created_at.strftime("%Y-%m-%d %H:%M"),
-                      "outcome": c.outcome,
-                      "notes": c.notes or ""} for c in calls]
     return data
 
 
@@ -115,28 +102,6 @@ def add_note(ref: str, data: NoteIn,
         raise HTTPException(status_code=422, detail="Note is empty")
     db.add(CaseNote(referral_id=referral.id,
                     consultant_id=int(token["sub"]), note=text))
-    if referral.status == "open":
-        referral.status = "in follow-up"
-    db.commit()
-    return {"status": "ok"}
-
-
-@router.post("/cases/{ref}/calls", status_code=201)
-def log_call(ref: str, data: CallIn,
-             token=Depends(require_role("consultant")),
-             db: Session = Depends(get_db)):
-    referral = my_referral(db, token, ref)
-    if referral.status == "closed":
-        raise HTTPException(status_code=409, detail="Case is closed")
-    event = db.get(RiskEvent, referral.risk_event_id)
-    if not has_call_consent(db, event.user_id):
-        raise HTTPException(status_code=409, detail="She has not agreed to calls")
-    if data.outcome not in CALL_OUTCOMES:
-        raise HTTPException(status_code=422, detail="Unknown outcome")
-    db.add(CallLog(referral_id=referral.id,
-                   consultant_id=int(token["sub"]),
-                   outcome=data.outcome,
-                   notes=data.notes.strip()))
     if referral.status == "open":
         referral.status = "in follow-up"
     db.commit()

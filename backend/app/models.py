@@ -92,12 +92,3 @@ class OtpCode(Base):
     code_hash = Column(String(128))
     expires_at = Column(DateTime(timezone=True))
     used = Column(Boolean, default=False)
-
-class CallLog(Base):
-    __tablename__ = "call_logs"
-    id = Column(Integer, primary_key=True)
-    referral_id = Column(Integer, ForeignKey("referrals.id"))
-    consultant_id = Column(Integer, ForeignKey("users.id"))
-    outcome = Column(String(40))
-    notes = Column(Text)
-    created_at = Column(DateTime(timezone=True), default=now)

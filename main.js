@@ -53,9 +53,6 @@ async function mockApi(path, { method = 'GET', body } = {}) {
       found.notes.push({ author: 'You', created_at: new Date().toISOString().slice(0, 16).replace('T', ' '), body: body.body });
       return { ok: true, status: 201, data: null };
     }
-    if (parts[2] === 'calls' && method === 'POST') {
-      return found.call_consent ? { ok: true, status: 201, data: null } : { ok: false, status: 403, data: null };
-    }
     if (parts[2] === 'close' && method === 'PATCH') { found.status = 'Closed'; return { ok: true, status: 200, data: null }; }
   }
   return { ok: false, status: 404, data: null };
@@ -228,7 +225,6 @@ async function initCase() {
     $('f-age').textContent = c.age_range;
     $('f-score').textContent = c.score + ' of 30';
     $('f-selfharm').textContent = c.self_harm ? 'Yes' : 'No';
-    $('f-calls').textContent = c.call_consent ? 'Yes' : 'No';
     $('f-status').textContent = c.status;
     $('f-assigned').textContent = c.assigned_at;
 
@@ -239,10 +235,8 @@ async function initCase() {
       ul.appendChild(li);
     }
 
-    $('log-call').disabled = !c.call_consent;               // she must have agreed to calls
-    $('call-hint').hidden = c.call_consent;
     const closed = c.status === 'Closed';
-    ['save-note', 'log-call', 'close-case'].forEach((id) => { if (closed) $(id).disabled = true; });
+    ['save-note', 'close-case'].forEach((id) => { if (closed) $(id).disabled = true; });
     reveal();
   }
 
@@ -263,12 +257,6 @@ async function initCase() {
     const text = $('note-text').value.trim();
     if (!text) { showError('Please write a note first.'); return; }
     if (await send('/notes', 'POST', { body: text }, 'Note saved.')) { $('note-text').value = ''; load(); }
-  });
-
-  $('log-call').addEventListener('click', async () => {
-    const ok = await send('/calls', 'POST',
-      { outcome: $('call-outcome').value, notes: $('call-notes').value.trim() }, 'Call logged.');
-    if (ok) $('call-notes').value = '';
   });
 
   $('close-case').addEventListener('click', async () => {

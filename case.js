@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
             $("f-trigger").textContent = TRIGGERS[c.trigger] || c.trigger || "";
             $("f-status").textContent = cap(c.status);
             $("f-assigned").textContent = c.assigned_at;
+            $("call-consent-warning").hidden = c.call_consent === true;
 
             const ul = $("notes-list"); ul.replaceChildren();
             for (const n of c.notes) {

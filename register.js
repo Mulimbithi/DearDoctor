@@ -33,7 +33,8 @@ form.querySelector('button[type="submit"]');
                     email: form.elements["email"].value.trim(),
                     password: form.elements["password"].value,
                     consent: true,
-                    sms_opt_in: form.elements["sms-notifications"].checked
+                    sms_opt_in: form.elements["sms-notifications"].checked,
+                    call_consent: form.elements["consultant-calls"].checked
                 }
             });
             try{
