@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Admin - Consultants</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="stylesheet" href="style.css">
@@ -86,7 +86,7 @@
         .table-container {
             background-color: var(--bg-card);
             border-radius: var(--radius-card);
-            overflow: hidden;
+            overflow-x: auto;
         }
 
         .custom-table {
@@ -169,15 +169,82 @@
             padding: 12px;
             text-align: center;
         }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 20px;
+            }
+
+            .navbar {
+                align-items: flex-start;
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .nav-links {
+                gap: 12px;
+                margin-left: auto;
+            }
+
+            .view-consultants {
+                grid-template-columns: 1fr;
+            }
+
+            .card {
+                order: -1;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 12px;
+            }
+
+            .navbar {
+                margin-bottom: 24px;
+            }
+
+            .brand-logo img,
+            .navbar .logo img {
+                max-height: 34px;
+                max-width: 180px;
+            }
+
+            .nav-links {
+                width: 100%;
+                margin-left: 0;
+                justify-content: flex-end;
+            }
+
+            .page-title {
+                font-size: 1.25rem;
+            }
+
+            .card {
+                padding: 18px;
+            }
+
+            .custom-table {
+                min-width: 520px;
+            }
+
+            .custom-table th,
+            .custom-table td {
+                padding: 14px 12px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="logo"><img src="images/DearDoctor%20logo.png" alt="DearDoctor"></div>
         <ul class="nav-links">
-            <li><a href="#">Consultants</a></li>
-            <li><a href="#">Settings</a></li>
-            <li><a href="#">Reports</a></li>
             <li><a href="#" id="signout">Sign out</a></li>
         </ul>
     </nav>
