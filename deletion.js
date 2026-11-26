@@ -37,6 +37,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 showPending(true);
                 status.textContent = result.message ||
                     "Your deletion request is pending. You can cancel it during the 7-day waiting period.";
+            } else if (result.deleted) {
+                clearSession();
+                status.textContent = result.message || "Your account has been deleted.";
+                window.setTimeout(() => window.location.assign("signin.html"), 1500);
             }
         } catch (error) {
             status.textContent = messageFor(error);

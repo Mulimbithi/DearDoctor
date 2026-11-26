@@ -7,7 +7,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import Session
 
 from app.db import get_db
-from app.models import User, OtpCode
+from app.models import User, OtpCode, Consent
 from app.phone import normalise_phone
 from app.security import create_token, generate_otp, hash_otp, verify_password, require_role
 from app.email_sender import send_otp_email
@@ -72,6 +72,27 @@ def login(data: LoginIn, db: Session = Depends(get_db)):
             .first())
     if not user or not verify_password(data.password, user.password_hash):
         raise HTTPException(status_code=401, detail="Wrong email or password")
+
+    if user.deletion_requested_at:
+        requested_at = user.deletion_requested_at
+        if requested_at.tzinfo is None:
+            requested_at = requested_at.replace(tzinfo=timezone.utc)
+        if datetime.now(timezone.utc) >= requested_at + timedelta(days=7):
+            user.status = "deleted"
+            user.pseudonym = "Deleted mother"
+            user.phone = None
+            user.email = None
+            user.age_range = None
+            user.password_hash = None
+            db.query(Consent).filter(Consent.user_id == user.id).delete(synchronize_session=False)
+            db.query(OtpCode).filter(OtpCode.user_id == user.id).delete(synchronize_session=False)
+            db.commit()
+            raise HTTPException(status_code=404, detail="This account has been deleted")
+        raise HTTPException(
+            status_code=403,
+            detail="Account deletion is pending. Sign in with an existing session to cancel it.",
+        )
+
     result = request_otp(OtpRequestIn(phone=user.phone), db)
     return {**result,
             "pending_token": create_token(user.id, "pending"),

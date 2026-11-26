@@ -1,11 +1,12 @@
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
-from app.db import engine, Base
+from app.db import engine, Base, ensure_schema
 from app import models
 from app.routers import mother, auth, chat, consultant, admin
 from app.security import require_role
 
 Base.metadata.create_all(engine)
+ensure_schema()
 
 app = FastAPI()
 app.add_middleware(

@@ -1,14 +1,112 @@
+from datetime import datetime, timedelta, timezone
+
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel, field_validator
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.db import get_db
-from app.models import User, Consent
+from app.models import User, Consent, OtpCode
 from app.phone import normalise_phone
-from app.security import hash_password
+from app.security import hash_password, require_role, verify_password
 
 router = APIRouter(prefix="/api/mother", tags=["mother"])
+
+DELETION_WAIT_DAYS = 7
+
+
+class DeletionIn(BaseModel):
+    password: str
+
+
+def get_mother(db: Session, token: dict) -> User:
+    user = db.get(User, int(token["sub"]))
+    if not user or user.role != "mother" or user.status not in ("active", "deleted"):
+        raise HTTPException(status_code=404, detail="Account not found")
+    if user.status == "deleted":
+        raise HTTPException(status_code=404, detail="Account not found")
+    return user
+
+
+def requested_at_is_aware(value):
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        return value.replace(tzinfo=timezone.utc)
+    return value
+
+
+def anonymize_deleted_account(db: Session, user: User) -> None:
+    user.status = "deleted"
+    user.pseudonym = "Deleted mother"
+    user.phone = None
+    user.email = None
+    user.age_range = None
+    user.password_hash = None
+    user.deletion_requested_at = datetime.now(timezone.utc)
+    db.query(Consent).filter(Consent.user_id == user.id).delete(synchronize_session=False)
+    db.query(OtpCode).filter(OtpCode.user_id == user.id).delete(synchronize_session=False)
+    db.add(user)
+
+
+@router.get("/deletion-request")
+def get_deletion_request(token=Depends(require_role("mother")),
+                         db: Session = Depends(get_db)):
+    user = get_mother(db, token)
+    requested_at = requested_at_is_aware(user.deletion_requested_at)
+    if requested_at:
+        if datetime.now(timezone.utc) >= requested_at + timedelta(days=DELETION_WAIT_DAYS):
+            anonymize_deleted_account(db, user)
+            db.commit()
+            return {
+                "pending": False,
+                "deleted": True,
+                "message": "Your account has been deleted."
+            }
+        return {
+            "pending": True,
+            "deleted": False,
+            "message": "Your deletion request is pending. You can cancel it during the 7-day waiting period."
+        }
+    return {"pending": False, "deleted": False, "message": "No deletion request is pending."}
+
+
+@router.post("/deletion-request")
+def request_deletion(data: DeletionIn,
+                     token=Depends(require_role("mother")),
+                     db: Session = Depends(get_db)):
+    user = get_mother(db, token)
+    if not verify_password(data.password, user.password_hash):
+        raise HTTPException(status_code=401, detail="Incorrect password")
+    if user.deletion_requested_at is not None:
+        raise HTTPException(status_code=409, detail="A deletion request is already pending")
+
+    user.deletion_requested_at = datetime.now(timezone.utc)
+    db.commit()
+    return {
+        "pending": True,
+        "message": "Your request was received. Your account will be deleted after 7 days. You can cancel during the waiting period."
+    }
+
+
+@router.post("/deletion-request/cancel")
+def cancel_deletion_request(token=Depends(require_role("mother")),
+                            db: Session = Depends(get_db)):
+    user = get_mother(db, token)
+    if user.deletion_requested_at is None:
+        return {"pending": False, "message": "There is no deletion request to cancel."}
+
+    requested_at = requested_at_is_aware(user.deletion_requested_at)
+    if requested_at and datetime.now(timezone.utc) >= requested_at + timedelta(days=DELETION_WAIT_DAYS):
+        anonymize_deleted_account(db, user)
+        db.commit()
+        return {"pending": False, "deleted": True,
+                "message": "The 7-day waiting period has ended, so the account has been deleted."}
+
+    user.status = "active"
+    user.deletion_requested_at = None
+    db.commit()
+    return {"pending": False, "message": "Your deletion request has been cancelled."}
 
 class RegisterIn(BaseModel):
     pseudonym: str

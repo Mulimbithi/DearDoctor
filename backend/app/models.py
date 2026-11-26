@@ -19,6 +19,7 @@ class User(Base):
     status = Column(String(20), default="active")    # active / paused
     created_at = Column(DateTime(timezone=True), default=now)
     password_hash = Column(String(255))
+    deletion_requested_at = Column(DateTime(timezone=True), nullable=True)
 
 class Consent(Base):
     __tablename__ = "consents"
