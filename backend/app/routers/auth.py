@@ -46,7 +46,7 @@ def request_otp(data: OtpRequestIn, db: Session = Depends(get_db)):
                     .filter(OtpCode.user_id == user.id,
                             OtpCode.expires_at > now - timedelta(minutes=10))
                     .count())
-        if recent >= 8:
+        if recent >= 3:
             raise HTTPException(status_code=429,
                                 detail="Too many requests. Try again later.")
         code = generate_otp()
